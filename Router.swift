@@ -10,6 +10,8 @@ import net
 import regex
 import sys
 
+import Foundation
+
 public class Router {
     private var routeElems: [RouterElement] = []
     private var server: HttpServer?
@@ -88,7 +90,7 @@ extension Router : HttpServerDelegate {
         let routeResp = RouterResponse(response: response)
         let method = RouterMethod(string: request.method)
         
-        var urlPath = StringUtils.toUtf8String(routeReq.parsedUrl.path!)
+        let urlPath = StringUtils.toUtf8String(routeReq.parsedUrl.path!)
         if  urlPath != nil  {
             var handled = false
             var elemIndex = -1
@@ -102,7 +104,7 @@ extension Router : HttpServerDelegate {
                 }
                 elemIndex++
                 if  elemIndex < self.routeElems.count  &&  routeResp.error == nil {
-                    self.routeElems[elemIndex].process(method, urlPath: &urlPath!, request: routeReq, response: routeResp, next: callback!)
+                    self.routeElems[elemIndex].process(method, urlPath: urlPath!, request: routeReq, response: routeResp, next: callback!)
                 }
                 else {
                     do {

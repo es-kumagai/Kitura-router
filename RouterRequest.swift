@@ -9,6 +9,8 @@
 import io
 import net
 
+import Foundation
+
 public class RouterRequest: Reader {
     let serverRequest: ServerRequest
     let parsedUrl: UrlParser
@@ -35,8 +37,8 @@ public class RouterRequest: Reader {
         url = String(serverRequest.urlString)
     }
     
-    public func readBuffer(inout buffer: [UInt8]) throws -> Int {
-        return try serverRequest.readBuffer(&buffer)
+    public func readData(data: NSMutableData) throws -> Int {
+        return try serverRequest.readData(data)
     }
     
     public func readString() throws -> String? {

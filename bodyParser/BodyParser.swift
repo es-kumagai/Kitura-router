@@ -10,6 +10,7 @@ import SwiftyJSON
 import sys
 import net
 import io
+
 import Foundation
 
 public class BodyParser : RouterMiddleware {
@@ -59,8 +60,8 @@ public class BodyParser : RouterMiddleware {
                     }
                 }
             }
-            catch  {
-                //response.error = Error()
+            catch {
+                // response.error = error
             }
         }
         
@@ -68,13 +69,11 @@ public class BodyParser : RouterMiddleware {
     }
     
     private class func readBodyData(reader: Reader) throws -> NSMutableData {
-        var body = [UInt8](count: BodyParser.BUFFER_SIZE, repeatedValue: 0)
         let bodyData = NSMutableData()
         
-        var length = try reader.readBuffer(&body)
+        var length = try reader.readData(bodyData)
         while length != 0 {
-            bodyData.appendBytes(body, length: length)
-            length = try reader.readBuffer(&body)
+            length = try reader.readData(bodyData)
         }
         return bodyData
     }

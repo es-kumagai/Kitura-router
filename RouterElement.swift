@@ -9,6 +9,8 @@
 import regex
 import sys
 
+import Foundation
+
 class RouterElement {
     static let keyRegex = Regex()
     static let nonKeyRegex = Regex()
@@ -51,12 +53,12 @@ class RouterElement {
         self.middleware = middleware
     }
     
-    func process(httpMethod: RouterMethod, inout urlPath: [UInt8], request: RouterRequest, response: RouterResponse, next: (processed: Bool) -> Void) {
+    func process(httpMethod: RouterMethod, urlPath: NSData, request: RouterRequest, response: RouterResponse, next: (processed: Bool) -> Void) {
         
         if  method == .All  ||  method == httpMethod {
             if  let r = regex  {
                 let matcher = r.matcher!
-                if  matcher.match(&urlPath) {
+                if  matcher.match(urlPath) {
                     request.route = pattern
                     updateRequestParams(matcher, request: request)
                     processHelper(request, response: response, next: next)
@@ -112,7 +114,7 @@ class RouterElement {
                         matched = true
                     }
                     else {
-                        var plusQuestStar: String?
+                        //var plusQuestStar: String?
                         if  keyMatcher.match(path)  {
                             // We found a path element with a named/key capture
                             if  let pathPrefix = keyMatcher.getMatchedElement(1)  {
@@ -122,7 +124,7 @@ class RouterElement {
                             if  matchExp?.characters.count == 0  {
                                 matchExp = "[^/]+?"
                             }
-                            plusQuestStar = keyMatcher.getMatchedElement(4)!
+                            //plusQuestStar = keyMatcher.getMatchedElement(4)!
                             keys.append(keyMatcher.getMatchedElement(2)!)
                             matched = true
                         }
@@ -132,7 +134,7 @@ class RouterElement {
                                 prefix = pathPrefix
                             }
                             matchExp = nonKeyMatcher.getMatchedElement(2)!
-                            plusQuestStar = nonKeyMatcher.getMatchedElement(3)!
+                            //plusQuestStar = nonKeyMatcher.getMatchedElement(3)!
                             keys.append(String(nonKeyIndex))
                             nonKeyIndex++
                             matched = true

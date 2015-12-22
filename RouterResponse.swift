@@ -6,31 +6,59 @@
 //  Copyright © 2015 IBM. All rights reserved.
 //
 
+import io
 import net
 import sys
 
+import SwiftyJSON
+
+import Foundation
+
 public class RouterResponse {
     let response: ServerResponse
+    private let buffer = BufferList()
     
-    public var error: Error?
+    public var error: NSError?
     
     init(response: ServerResponse) {
         self.response = response
     }
     
     public func end() throws -> RouterResponse {
+        
+        if  let data = buffer.data  {
+            let contentLength = getHeader("Content-Length")
+            if  contentLength == nil  {
+                setHeader("Content-Length", value: String(buffer.count))
+            }
+            try response.writeData(data)
+        }
         try response.end()
         return self
     }
     
     public func end(str: String) throws -> RouterResponse {
-        try send(str)
+        send(str)
         try end()
         return self
     }
     
-    public func send(str: String) throws -> RouterResponse {
-        try response.writeString(str)
+    public func sendData(data: NSData) -> RouterResponse {
+        buffer.appendData(data)
+        return self
+    }
+    
+    public func send(str: String) -> RouterResponse {
+        if  let data = StringUtils.toUtf8String(str)  {
+            buffer.appendData(data)
+        }
+        return self
+    }
+    
+    public func sendJson(json: JSON) -> RouterResponse {
+        let jsonStr = json.description
+        setHeader("Content-Type", value: ContentType.contentTypeForExtension("json")!)
+        send(jsonStr)
         return self
     }
     
@@ -47,10 +75,10 @@ public class RouterResponse {
     public func sendStatus(status: Int) throws -> RouterResponse {
         self.status(status)
         if  let statusText = Http.statusCodes[status] {
-            try send(statusText)
+            send(statusText)
         }
         else {
-            try send(String(status))
+            send(String(status))
         }
         return self
 
@@ -58,7 +86,7 @@ public class RouterResponse {
     
     public func sendStatus(status: HttpStatusCode) throws -> RouterResponse {
         self.status(status)
-        try send(Http.statusCodes[status.rawValue]!)
+        send(Http.statusCodes[status.rawValue]!)
         return self
 
     }
