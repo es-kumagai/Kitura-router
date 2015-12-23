@@ -68,7 +68,7 @@ public class BodyParser : RouterMiddleware {
         return nil
     }
     
-    private class func readBodyData(reader: Reader) throws -> NSMutableData {
+    public class func readBodyData(reader: Reader) throws -> NSMutableData {
         let bodyData = NSMutableData()
         
         var length = try reader.readData(bodyData)
