@@ -43,6 +43,13 @@ public class RouterResponse {
         return self
     }
     
+    public func end(data: NSData) throws -> RouterResponse {
+        sendData(data)
+        try end()
+        return self
+    }
+
+    
     public func sendData(data: NSData) -> RouterResponse {
         buffer.appendData(data)
         return self
