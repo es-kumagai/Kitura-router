@@ -70,10 +70,10 @@ public class Router {
         return self
     }
     
-    public func listen(port: Int) {
+    public func listen(port: Int, notOnMainQueue: Bool=false) {
         server = Http.createServer()
         server!.delegate = self
-        server!.listen(port)
+        server!.listen(port, notOnMainQueue: notOnMainQueue)
     }
     
     private func routingHelper(method: RouterMethod, pattern: String?, handler: RouterHandler) -> Router {
