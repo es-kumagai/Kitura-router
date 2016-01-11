@@ -6,7 +6,8 @@
 //  Copyright © 2015 IBM. All rights reserved.
 //
 
-import SwiftyJSON
+// import SwiftyJSON
+
 import sys
 import net
 import io
@@ -26,21 +27,22 @@ public class BodyParser : RouterMiddleware {
     public class func parse(message: Reader, contentType: String?) -> ParsedBody? {
         if let contentType = contentType {
             do {
-                if ContentType.isType(contentType, typeDescriptor: "json") {
-                    let bodyData = try readBodyData(message)
-                    let json = JSON(data: bodyData)
-                    if json != JSON.null {
-                        return ParsedBody(json: json)
-                    }
-                }
-                else if ContentType.isType(contentType, typeDescriptor: "urlencoded") {
+                
+		//if ContentType.isType(contentType, typeDescriptor: "json") {
+                //    let bodyData = try readBodyData(message)
+                //    let json = JSON(data: bodyData)
+                 //   if json != JSON.null {
+                 //       return ParsedBody(json: json)
+                 //   }
+                //}
+                if ContentType.isType(contentType, typeDescriptor: "urlencoded") {
                     let bodyData = try readBodyData(message)
                     var parsedBody = [String:String]()
                     var success = true
-                    if let bodyAsString = String(data: bodyData, encoding: NSUTF8StringEncoding) {
-                        let bodyAsArray = bodyAsString.componentsSeparatedByString("&")
+                     let bodyAsString = String(data: bodyData, encoding: NSUTF8StringEncoding) 
+                        let bodyAsArray = bodyAsString.bridge().componentsSeparatedByString("&")
                         for element in bodyAsArray {
-                            let elementPair = element.componentsSeparatedByString("=")
+                            let elementPair = element.bridge().componentsSeparatedByString("=")
                             if elementPair.count == 2 {
                                 parsedBody[elementPair[0]] = elementPair[1]
                             }
@@ -51,13 +53,13 @@ public class BodyParser : RouterMiddleware {
                         if success && parsedBody.count > 0 {
                             return ParsedBody(urlEncoded: parsedBody)
                         }
-                    }
+                    
                 }
                 else if ContentType.isType(contentType, typeDescriptor: "text/*") {
                     let bodyData = try readBodyData(message)
-                    if let bodyAsString = String(data: bodyData, encoding: NSUTF8StringEncoding) {
-                        return ParsedBody(text:  bodyAsString)
-                    }
+                    let bodyAsString = String(data: bodyData, encoding: NSUTF8StringEncoding) 
+                     return ParsedBody(text:  bodyAsString)
+                    
                 }
             }
             catch {
@@ -83,13 +85,13 @@ public class BodyParser : RouterMiddleware {
 
 public class ParsedBody {
     
-    private var jsonBody: JSON?
+    // private var jsonBody: JSON?
     private var urlEncodedBody: [String:String]?
     private var textBody: String?
     
-    public init (json: JSON) {
-        jsonBody = json
-    }
+    //public init (json: JSON) {
+    //    jsonBody = json
+    //}
     
     public init (urlEncoded: [String:String]) {
         urlEncodedBody = urlEncoded
@@ -99,9 +101,9 @@ public class ParsedBody {
         textBody = text
     }
     
-    public func asJson() -> JSON? {
-        return jsonBody
-    }
+    //public func asJson() -> JSON? {
+    //    return jsonBody
+    //}
     
     public func asUrlEncoded() -> [String:String]? {
         return urlEncodedBody

@@ -99,7 +99,7 @@ class RouterElement {
             var keys: [String] = []
             var nonKeyIndex = 0
             
-            let paths = p.componentsSeparatedByString("/")
+            let paths = p.bridge().componentsSeparatedByString("/")
             
             for path in paths {
                 // If there was a leading slash, there will be an empty component in the split
