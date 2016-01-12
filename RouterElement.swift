@@ -136,7 +136,7 @@ class RouterElement {
                             matchExp = nonKeyMatcher.getMatchedElement(2)!
                             //plusQuestStar = nonKeyMatcher.getMatchedElement(3)!
                             keys.append(String(nonKeyIndex))
-                            nonKeyIndex++
+                            nonKeyIndex+=1
                             matched = true
                         }
                     }

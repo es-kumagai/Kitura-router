@@ -102,7 +102,7 @@ extension Router : HttpServerDelegate {
                 if  processed  {
                     handled = true
                 }
-                elemIndex++
+                elemIndex+=1
                 if  elemIndex < self.routeElems.count  &&  routeResp.error == nil {
                     self.routeElems[elemIndex].process(method, urlPath: urlPath!, request: routeReq, response: routeResp, next: callback!)
                 }
