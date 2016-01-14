@@ -39,27 +39,30 @@ public class BodyParser : RouterMiddleware {
                     let bodyData = try readBodyData(message)
                     var parsedBody = [String:String]()
                     var success = true
-                     let bodyAsString = String(data: bodyData, encoding: NSUTF8StringEncoding) 
-                        let bodyAsArray = bodyAsString.bridge().componentsSeparatedByString("&")
-                        for element in bodyAsArray {
-                            let elementPair = element.bridge().componentsSeparatedByString("=")
-                            if elementPair.count == 2 {
-                                parsedBody[elementPair[0]] = elementPair[1]
-                            }
-                            else {
-                                success = false
-                            }
-                        }
-                        if success && parsedBody.count > 0 {
-                            return ParsedBody(urlEncoded: parsedBody)
-                        }
-                    
+					if let bodyAsString: String = String(data: bodyData, encoding: NSUTF8StringEncoding)! {
+						
+						let bodyAsArray = bodyAsString.bridge().componentsSeparatedByString("&")
+						for element in bodyAsArray {
+							let elementPair = element.bridge().componentsSeparatedByString("=")
+							if elementPair.count == 2 {
+								parsedBody[elementPair[0]] = elementPair[1]
+							}
+							else {
+								success = false
+							}
+						}
+						if success && parsedBody.count > 0 {
+							return ParsedBody(urlEncoded: parsedBody)
+						}
+						
+					}
                 }
                 else if ContentType.isType(contentType, typeDescriptor: "text/*") {
                     let bodyData = try readBodyData(message)
-                    let bodyAsString = String(data: bodyData, encoding: NSUTF8StringEncoding) 
-                     return ParsedBody(text:  bodyAsString)
-                    
+					if let bodyAsString: String = String(data: bodyData, encoding: NSUTF8StringEncoding)! {
+                     	return ParsedBody(text:  bodyAsString)
+					}
+					
                 }
             }
             catch {
