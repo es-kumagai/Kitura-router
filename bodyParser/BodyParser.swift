@@ -39,7 +39,7 @@ public class BodyParser : RouterMiddleware {
                     let bodyData = try readBodyData(message)
                     var parsedBody = [String:String]()
                     var success = true
-					if let bodyAsString: String = String(data: bodyData, encoding: NSUTF8StringEncoding)! {
+					if let bodyAsString: String = String(data: bodyData, encoding: NSUTF8StringEncoding) {
 						
 						let bodyAsArray = bodyAsString.bridgeTo().componentsSeparatedByString("&")
 						for element in bodyAsArray {
@@ -59,7 +59,7 @@ public class BodyParser : RouterMiddleware {
                 }
                 else if ContentType.isType(contentType, typeDescriptor: "text/*") {
                     let bodyData = try readBodyData(message)
-					if let bodyAsString: String = String(data: bodyData, encoding: NSUTF8StringEncoding)! {
+					if let bodyAsString: String = String(data: bodyData, encoding: NSUTF8StringEncoding) {
                      	return ParsedBody(text:  bodyAsString)
 					}
 					
