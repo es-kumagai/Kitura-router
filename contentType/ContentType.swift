@@ -26,7 +26,7 @@ public class ContentType {
     
     public class func isType (messageContentType: String, typeDescriptor: String) -> Bool {
         let type = typeDescriptor.lowercaseString
-        let typeAndSubtype = messageContentType.bridge().componentsSeparatedByString(";")[0].lowercaseString
+        let typeAndSubtype = messageContentType.bridgeTo().componentsSeparatedByString(";")[0].lowercaseString
         
         if typeAndSubtype == type {
             return true
@@ -44,8 +44,8 @@ public class ContentType {
         }
         
         // the types match and the subtype in typeDescriptor is "*"
-        let messageTypePair = typeAndSubtype.bridge().componentsSeparatedByString("/")
-        let normalizedTypePair = normalizedType.bridge().componentsSeparatedByString("/")
+        let messageTypePair = typeAndSubtype.bridgeTo().componentsSeparatedByString("/")
+        let normalizedTypePair = normalizedType.bridgeTo().componentsSeparatedByString("/")
         if messageTypePair.count == 2 && normalizedTypePair.count == 2
             && messageTypePair[0] == normalizedTypePair[0] && normalizedTypePair[1] == "*" {
             return true
