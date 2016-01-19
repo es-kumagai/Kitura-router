@@ -11,6 +11,7 @@
 import sys
 import net
 import io
+import ETSocket
 
 import Foundation
 
@@ -24,7 +25,7 @@ public class BodyParser : RouterMiddleware {
         next()
     }
     
-    public class func parse(message: Reader, contentType: String?) -> ParsedBody? {
+    public class func parse(message: ETReader, contentType: String?) -> ParsedBody? {
         if let contentType = contentType {
             do {
                 
@@ -73,7 +74,7 @@ public class BodyParser : RouterMiddleware {
         return nil
     }
     
-    public class func readBodyData(reader: Reader) throws -> NSMutableData {
+    public class func readBodyData(reader: ETReader) throws -> NSMutableData {
         let bodyData = NSMutableData()
         
         var length = try reader.readData(bodyData)

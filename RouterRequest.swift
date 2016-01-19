@@ -8,10 +8,11 @@
 
 import io
 import net
+import ETSocket
 
 import Foundation
 
-public class RouterRequest: Reader {
+public class RouterRequest: ETReader {
     let serverRequest: ServerRequest
     let parsedUrl: UrlParser
     
