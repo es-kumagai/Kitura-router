@@ -10,7 +10,6 @@
 
 import sys
 import net
-import io
 import ETSocket
 
 import Foundation
