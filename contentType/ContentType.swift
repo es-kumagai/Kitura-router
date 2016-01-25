@@ -1,21 +1,86 @@
-//
-//  ContentType.swift
-//  router
-//
-//  Created by Ira Rosen on 29/11/15.
-//  Copyright © 2015 IBM. All rights reserved.
-//
+/**
+ * Copyright IBM Corporation 2015
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
+
+import Foundation
 
 public class ContentType {
     
+    // For now the MIME types are specified in
+    private static let TYPES_PATH: [String] = [
+        "Sources/router/contentType/types.json",
+        "Packages/Phoenix/Sources/router/contentType/types.json",
+        "./types.json"]
+    
+    
     private static var extToContentType = [String:String]()
+    
+    /**
+    * Attempt to load data from the filesystem in order from the following paths
+    **/
+    public class func loadDataFromFile (paths: [String]) -> NSData? {
         
-    public class func initialize () {
-        for (contentType, exts) in rawTypes {
-            for ext in exts {
-                extToContentType[ext] = contentType
+        for path in paths {
+            
+            let data = NSData(contentsOfFile: path)
+            
+            if data != nil {
+                return data
             }
         }
+        
+        return nil
+        
+    }
+    
+    
+    /**
+    * The following function loads the MIME types from an external file
+    **/
+    public class func initialize () {
+        
+        let contentTypesData = loadDataFromFile(TYPES_PATH)
+        
+        guard let ct = contentTypesData else {
+            return
+        }
+        
+        do {
+            
+            // MARK: Linux Foundation will return an Any instead of an AnyObject
+            // Need to test if this breaks the Linux build.
+            let jsonData = try NSJSONSerialization.JSONObjectWithData(ct,
+                options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                
+            for (contentType, exts) in jsonData! {
+                    
+                let e = exts as! [String]
+                for ext in e {
+                 
+                    extToContentType[ext] = contentType as? String
+
+                }
+            }
+                
+            
+        } catch {
+                
+            print("Error reading \(TYPES_PATH)")
+            return
+        }
+        
     }
     
     
@@ -72,29 +137,4 @@ public class ContentType {
         }
     }
     
-    
-    private static var rawTypes = [
-        "text/plain": ["txt","text","conf","def","list","log","in","ini"],
-        "text/html": ["html", "htm"],
-        "text/css": ["css"],
-        "text/csv": ["csv"],
-        "text/xml": [],
-        "text/javascript": [],
-        "text/markdown": [],
-        "text/x-markdown": ["markdown","md","mkd"],
-        
-        "application/json": ["json","map"],
-        "application/x-www-form-urlencoded": [],
-        "application/xml": ["xml","xsl","xsd"],
-        "application/javascript": ["js"],
-        
-        "image/bmp": ["bmp"],
-        "image/png": ["png"],
-        "image/gif": ["gif"],
-        "image/jpeg": ["jpeg","jpg","jpe"],
-
-    ]
-    
-
-
 }
