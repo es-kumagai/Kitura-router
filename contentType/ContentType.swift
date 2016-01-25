@@ -18,6 +18,8 @@ import Foundation
 
 public class ContentType {
     
+    private static let MIME_TYPE_EMBEDDED: Bool = true
+    
     // For now the MIME types are specified in
     private static let TYPES_PATH: [String] = [
         "Sources/router/contentType/types.json",
@@ -50,6 +52,24 @@ public class ContentType {
     * The following function loads the MIME types from an external file
     **/
     public class func initialize () {
+        
+        // MARK: Remove this when Linux reading of JSON files works.
+        if MIME_TYPE_EMBEDDED {
+            
+            print ("Loading embedded MIME types.")
+            
+            for (contentType, exts) in rawTypes {
+                for ext in exts {
+                    extToContentType[ext] = contentType
+                }
+            }
+            
+            return
+        }
+        
+        // New behavior of using a file
+        
+        print("Loading MIME types from file")
         
         let contentTypesData = loadDataFromFile(TYPES_PATH)
         
@@ -142,5 +162,27 @@ public class ContentType {
             return type
         }
     }
+    
+    private static var rawTypes = [
+        "text/plain": ["txt","text","conf","def","list","log","in","ini"],
+        "text/html": ["html", "htm"],
+        "text/css": ["css"],
+        "text/csv": ["csv"],
+        "text/xml": [],
+        "text/javascript": [],
+        "text/markdown": [],
+        "text/x-markdown": ["markdown","md","mkd"],
+        
+        "application/json": ["json","map"],
+        "application/x-www-form-urlencoded": [],
+        "application/xml": ["xml","xsl","xsd"],
+        "application/javascript": ["js"],
+        
+        "image/bmp": ["bmp"],
+        "image/png": ["png"],
+        "image/gif": ["gif"],
+        "image/jpeg": ["jpeg","jpg","jpe"],
+        
+    ]
     
 }
