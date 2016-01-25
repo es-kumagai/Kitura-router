@@ -54,6 +54,7 @@ public class ContentType {
         let contentTypesData = loadDataFromFile(TYPES_PATH)
         
         guard let ct = contentTypesData else {
+            print("Could not find a MIME types file")
             return
         }
         
@@ -63,6 +64,11 @@ public class ContentType {
             // Need to test if this breaks the Linux build.
             let jsonData = try NSJSONSerialization.JSONObjectWithData(ct,
                 options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
+            
+            guard jsonData != nil else {
+                print ("JSON could not be parsed")
+                return
+            }
                 
             for (contentType, exts) in jsonData! {
                     
