@@ -18,6 +18,7 @@ public class Router {
     
     public init() {
         ContentType.initialize()
+        Logger.log("Router initialized")
     }
     
     public func all(handler: RouterHandler) -> Router {
