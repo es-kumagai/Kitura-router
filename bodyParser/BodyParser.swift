@@ -41,9 +41,9 @@ public class BodyParser : RouterMiddleware {
                     var success = true
 					if let bodyAsString: String = String(data: bodyData, encoding: NSUTF8StringEncoding) {
 						
-						let bodyAsArray = bodyAsString.bridgeTo().componentsSeparatedByString("&")
+						let bodyAsArray = bodyAsString.bridge().componentsSeparatedByString("&")
 						for element in bodyAsArray {
-							let elementPair = element.bridgeTo().componentsSeparatedByString("=")
+							let elementPair = element.bridge().componentsSeparatedByString("=")
 							if elementPair.count == 2 {
 								parsedBody[elementPair[0]] = elementPair[1]
 							}
