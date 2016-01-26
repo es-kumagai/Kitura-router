@@ -120,6 +120,7 @@ extension Router : HttpServerDelegate {
                     do {
                         if  routeResp.error != nil  {
                             let message = "Server error: \(routeResp.error!.localizedDescription)"
+                            Logger.error(message)
                             try routeResp.status(.INTERNAL_SERVER_ERROR).end(message)
                         }
                         else if  !handled {
