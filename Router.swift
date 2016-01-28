@@ -85,6 +85,12 @@ public class Router {
         server!.delegate = self
         server!.listen(port, notOnMainQueue: notOnMainQueue)
     }
+
+    public func stop() {
+        if let server = server {
+            server.stop()
+        }
+    }
     
     private func routingHelper(method: RouterMethod, pattern: String?, handler: RouterHandler) -> Router {
         routeElems.append(RouterElement(method: method, pattern: pattern, handler: handler))
