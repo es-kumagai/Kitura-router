@@ -23,7 +23,6 @@ import Foundation
 
 public class Router {
     private var routeElems: [RouterElement] = []
-    private var server: HttpServer?
     
     public init() {
         ContentType.initialize()
