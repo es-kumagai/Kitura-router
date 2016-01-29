@@ -15,6 +15,7 @@
  **/
 
 import Foundation
+import utils
 
 public class ContentType {
     
@@ -56,7 +57,7 @@ public class ContentType {
         // MARK: Remove this when Linux reading of JSON files works.
         if MIME_TYPE_EMBEDDED {
             
-            print ("Loading embedded MIME types.")
+            Logger.warning("Loading embedded MIME types.")
             
             for (contentType, exts) in rawTypes {
                 for ext in exts {
@@ -69,7 +70,7 @@ public class ContentType {
         
         // New behavior of using a file
         
-        print("Loading MIME types from file")
+        Logger.verbose("Loading MIME types from file")
         
         let contentTypesData = loadDataFromFile(TYPES_PATH)
         
@@ -86,7 +87,7 @@ public class ContentType {
                 options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
             
             guard jsonData != nil else {
-                print ("JSON could not be parsed")
+                Logger.error("JSON could not be parsed")
                 return
             }
                 
@@ -103,7 +104,7 @@ public class ContentType {
             
         } catch {
                 
-            print("Error reading \(TYPES_PATH)")
+            Logger.error("Error reading \(TYPES_PATH)")
             return
         }
         
