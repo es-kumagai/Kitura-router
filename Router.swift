@@ -79,19 +79,7 @@ public class Router {
         routeElems.append(RouterElement(method: .All, pattern: path, middleware: middleware))
         return self
     }
-    
-    public func listen(port: Int, notOnMainQueue: Bool=false) {
-        server = Http.createServer()
-        server!.delegate = self
-        server!.listen(port, notOnMainQueue: notOnMainQueue)
-    }
 
-    public func stop() {
-        if let server = server {
-            server.stop()
-        }
-    }
-    
     private func routingHelper(method: RouterMethod, pattern: String?, handler: RouterHandler) -> Router {
         routeElems.append(RouterElement(method: method, pattern: pattern, handler: handler))
         return self
