@@ -15,7 +15,7 @@
  **/
 
 import Foundation
-import utils
+import Logger 
 
 public class ContentType {
     
