@@ -17,7 +17,7 @@
 import net
 import regex
 import sys
-import utils
+import Logger
 
 import Foundation
 
