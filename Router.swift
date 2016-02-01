@@ -26,7 +26,7 @@ public class Router {
     
     public init() {
         ContentType.initialize()
-        Logger.verbose("Router initialized")
+        Log.verbose("Router initialized")
     }
     
     public func all(handler: RouterHandler) -> Router {
@@ -113,7 +113,7 @@ extension Router : HttpServerDelegate {
                     do {
                         if  routeResp.error != nil  {
                             let message = "Server error: \(routeResp.error!.localizedDescription)"
-                            Logger.error(message)
+                            Log.error(message)
                             try routeResp.status(.INTERNAL_SERVER_ERROR).end(message)
                         }
                         else if  !handled {
