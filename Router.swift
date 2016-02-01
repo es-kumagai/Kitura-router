@@ -17,7 +17,7 @@
 import net
 import regex
 import sys
-import Logger
+import HeliumLogger
 
 import Foundation
 

@@ -15,7 +15,7 @@
  **/
 
 import Foundation
-import Logger 
+import HeliumLogger
 
 public class ContentType {
     
