@@ -1,0 +1,14 @@
+# .travis.yml for Kitura Swift Packages
+
+sudo: true
+
+# whitelist
+branches:
+  only:
+    - master
+    - develop
+
+script:
+  - echo "About to trigger build for the Kitura repo..."
+  - ./kitura-build-trigger.sh $TRAVIS_BRANCH $TRAVIS_TOKEN
+  - echo "Request to build Kitura sent!"
